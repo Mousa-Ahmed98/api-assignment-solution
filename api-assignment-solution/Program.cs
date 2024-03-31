@@ -1,6 +1,9 @@
 
 using api_assignment_solution.Models;
+using api_assignment_solution.Repositories;
+using api_assignment_solution.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace api_assignment_solution
 {
@@ -18,8 +21,12 @@ namespace api_assignment_solution
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer();
+                options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
             });
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
