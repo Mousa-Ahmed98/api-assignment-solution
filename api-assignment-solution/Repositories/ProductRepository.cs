@@ -1,4 +1,5 @@
 ﻿using api_assignment_solution.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_assignment_solution.Repositories
 {
@@ -30,7 +31,12 @@ namespace api_assignment_solution.Repositories
 
         public Product? GetById(int Id)
         {
-            return _context.Products.FirstOrDefault(p => p.Id == Id);
+            return _context
+                .Products
+                .Where(p => p.Id == Id)
+                .Include(p => p.Category)
+                .FirstOrDefault();
+            
         }
 
         public void UpdateProduct(Product updProduct)

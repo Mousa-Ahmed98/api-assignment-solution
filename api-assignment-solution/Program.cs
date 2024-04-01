@@ -26,6 +26,10 @@ namespace api_assignment_solution
 
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MyPolicy", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -40,7 +44,7 @@ namespace api_assignment_solution
             }
             app.UseCors("MyPolicy");
             app.UseAuthorization();
-
+            //comment
 
             app.MapControllers();
 

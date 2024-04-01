@@ -8,72 +8,72 @@ namespace api_assignment_solution.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public ProductController(IProductService productService)
+        public CategoryController(ICategoryService categoryService)
         {
-            _productService = productService;
+            _categoryService = categoryService;
         }
 
         [HttpGet("{Id:int}")]
         public IActionResult Get(int Id)
         {
-            ProductRetVM? productRetVM = _productService.GetById(Id);
-            if(productRetVM == null)
+            CategortResVM? categortResVM = _categoryService.GetById(Id);
+            if (categortResVM == null)
             {
                 return BadRequest("Invalid Id");
             }
-            return Ok(productRetVM);
+            return Ok(categortResVM);
         }
 
         [HttpPost]
-        public IActionResult AddProduct(Product product)
+        public IActionResult AddCategory(Category category)
         {
             if (ModelState.IsValid)
             {
-                _productService.AddProduct(product);
+                _categoryService.AddCategory(category);
             }
             else
             {
                 return BadRequest(ModelState);
             }
-            return CreatedAtAction("Get", new {Id=product.Id}, product);
+            return CreatedAtAction("Get", new { Id = category.Id }, category);
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
 
-            List<Product>? products = _productService.GetAll();
-            if (products == null)
+            List<Category>? categories = _categoryService.GetAll();
+            if (categories == null)
             {
-                return BadRequest("No products");
+                return BadRequest("No categories");
             }
-            return Ok(products);
+            return Ok(categories);
         }
 
-        [HttpPut]
+        /*[HttpPut]
         public IActionResult Update(Product product)//from request body
         {
-            bool res = _productService.UpdateProduct(product);
+            bool res = _categoryService.Updateca(product);
             if (res)
             {
                 return NoContent();
             }
             return BadRequest("Invalid Id");
-        }
+        }*/
 
-        [HttpDelete]
+        /*[HttpDelete]
         public IActionResult Delete(int Id)
         {
-            bool res = _productService.DeleteProduct(Id);
+            bool res = _categoryService.DeleteProduct(Id);
             if (res)
             {
                 return NoContent();
             }
             return BadRequest("Invalid Id");
-        }
+        }*/
     }
 }

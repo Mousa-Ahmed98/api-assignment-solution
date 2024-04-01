@@ -1,4 +1,5 @@
 ﻿using api_assignment_solution.Models;
+using api_assignment_solution.Models.ViewModels;
 using api_assignment_solution.Repositories;
 
 namespace api_assignment_solution.Services
@@ -33,9 +34,18 @@ namespace api_assignment_solution.Services
             return _productRepository.GetAll();
         }
 
-        public Product GetById(int Id)
+        public ProductRetVM GetById(int Id)
         {
-            return _productRepository.GetById(Id);
+            Product Product = _productRepository.GetById(Id);
+            ProductRetVM ProductRetVM = new ProductRetVM() 
+            { 
+                Name = Product.Name,
+                Description = Product.Description,
+                Price = Product.Price,
+                Category = Product?.Category?.Name,
+            };
+
+            return ProductRetVM;
         }
 
         public bool UpdateProduct(Product updProduct)
@@ -48,6 +58,7 @@ namespace api_assignment_solution.Services
             product.Name = updProduct.Name;
             product.Price = updProduct.Price;
             product.Description = updProduct.Description;
+            product.CategoryId = updProduct.CategoryId;
             _productRepository.UpdateProduct(product);
             return true;
         }
