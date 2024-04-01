@@ -2,8 +2,13 @@
 using api_assignment_solution.Models;
 using api_assignment_solution.Repositories;
 using api_assignment_solution.Services;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace api_assignment_solution
 {
@@ -24,6 +29,9 @@ namespace api_assignment_solution
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
             });
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
@@ -33,6 +41,26 @@ namespace api_assignment_solution
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MyPolicy", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+
+            //Add token schema
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "http://localhost:5052",
+                    ValidAudience = "http://localhost:4200",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("I am Mousa---ITI, hack it if you can"))
+                };
             });
             var app = builder.Build();
 

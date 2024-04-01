@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_assignment_solution.Models
 {
-    public class ApplicationDbContext : DbContext
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         //Application Context
         public DbSet<Product> Products { get; set; }

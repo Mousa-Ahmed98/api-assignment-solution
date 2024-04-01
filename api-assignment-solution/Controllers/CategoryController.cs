@@ -1,6 +1,7 @@
 ﻿using api_assignment_solution.Models;
 using api_assignment_solution.Models.ViewModels;
 using api_assignment_solution.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace api_assignment_solution.Controllers
         }
 
         [HttpGet("{Id:int}")]
+        [Authorize]
         public IActionResult Get(int Id)
         {
             CategortResVM? categortResVM = _categoryService.GetById(Id);
